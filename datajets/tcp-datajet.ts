@@ -15,12 +15,14 @@ interface IDatajetConfig {
     host: string,
     port: number,
     maxRetries: number,
+    logKey: string,
 }
 
 const defaultConfig: IDatajetConfig = {
     host: "127.0.0.1",
     port: 5170,
     maxRetries: 2,
+    logKey: null,
 }
 
 const tcpDatajet: IDatajet = {
@@ -48,7 +50,12 @@ const tcpDatajet: IDatajet = {
                     }
                     for (let r = 0; r < config.maxRetries + 1; ++r) {
                         try {
-                            client.write(JSON.stringify(log));
+                            const content = (config.logKey) ? log[config.logKey] : JSON.stringify(log);
+                            client.write(content + '\n', (error) => {
+                                if (error) {
+                                    console.log("Failed to write to tcp connection.");
+                                }
+                            });
                             break;
                         }
                         catch (e) {

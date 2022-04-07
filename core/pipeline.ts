@@ -32,6 +32,7 @@ export const buildStage = (stage: IStage) : IBuiltStage => {
 
         const millisecondsPerBatch = 1000 / stage.config.batchRate;
         let startTime = Date.now();
+        let batchStartTime = Date.now();
         let batchIndex = 0;
         for await (const batch of generator) {
             if (batchIndex === stage.config.maxBatches) {
@@ -42,11 +43,17 @@ export const buildStage = (stage: IStage) : IBuiltStage => {
             executionResult.isExecutionSuccess &&= execSuccess;
             pipelineContext.isExecutionSuccess &&= execSuccess;
 
-            const deltaTime = Date.now() - startTime;
+            const now = Date.now();
+            const deltaTime = now - batchStartTime;
             const remainingTime = millisecondsPerBatch - deltaTime;
             await delay(remainingTime);
             ++batchIndex;
-            startTime = Date.now();
+
+            if ((now - startTime) > stage.config.maxTime * 1000) {
+                break;
+            }
+
+            batchStartTime = Date.now();
         }
 
         return executionResult;

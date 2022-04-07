@@ -12,6 +12,7 @@ import incrementGenerator from "./increment-generator.js"
 import colorLoggerGenerator from "./color-logger-generator.js"
 import referenceGenerator from "./reference-generator.js"
 import basicGenerator from "./basic-generator.js"
+import repeaterGenerator from "./repeater-generator.js"
 
 export default [
     lineByLineGenerator,
@@ -21,5 +22,6 @@ export default [
     colorLoggerGenerator,
     referenceGenerator,
     basicGenerator,
+    repeaterGenerator,
     ...validatorIndex,
 ]
