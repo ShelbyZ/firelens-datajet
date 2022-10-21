@@ -7,7 +7,7 @@
 import { serialize } from "v8";
 import crypto from 'crypto';
 
-import highwayhash from "highwayhash";
+// import highwayhash from "highwayhash";
 const key = Buffer.from('50069d41f480683272f38acee70a054611190cfe09c2ecd82aa4aaadb91a879c', 'hex');
 
 export function hash(item: any): string {

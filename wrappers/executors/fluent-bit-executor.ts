@@ -372,7 +372,7 @@ const fluentBitWrapper: IWrapper = {
                 try {
                     /* CMake */
                     await execChildAsyncWrapper((() => {
-                        const childProcess = exec("cmake ..", {cwd: `${fullRepoPath}/build`}, (error, stdout, stderr) => {
+                        const childProcess = exec("cmake -DFLB_DEBUG=ON -DFLB_TRACE=ON -DFLB_BACKTRACE=ON ..", {cwd: `${fullRepoPath}/build`}, (error, stdout, stderr) => {
                         if (error) {
                             logger.error("CMake failed");
                             loggerLogStd(error.message, cmakeProcessLogger);
@@ -421,7 +421,8 @@ const fluentBitWrapper: IWrapper = {
                 fluentBitChildProcess = spawn(`./fluent-bit`, [ `-c`, `${fluentBakedConfigFilePath}`], {
                     cwd: `${fullRepoPath}/build/bin`,
                     env: {
-                        "FLB_INSTRUMENTATION_OUT_PATH": outputInstrumentationPath
+                        "FLB_INSTRUMENTATION_OUT_PATH": outputInstrumentationPath,
+                        ...process.env
                     }
                 });
                 fluentBitChildProcess.stdout.on('data', (data) => {

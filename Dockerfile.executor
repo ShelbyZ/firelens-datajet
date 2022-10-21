@@ -36,6 +36,7 @@ RUN yum install -y  \
       flex \
       bison \
       nodejs \
+      gdb \
     && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 \
       --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 \
       --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 \
@@ -77,9 +78,6 @@ RUN npm prune --production # Remove dev dependencies
 
 # ---------- Release ----------
 FROM base AS release
-
-COPY ./data/data-public ./data/data-public
-COPY ./firelens-datajet.json ./firelens-datajet.json
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
