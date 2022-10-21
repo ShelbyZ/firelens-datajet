@@ -12,6 +12,7 @@ import dotenv from 'dotenv';
 import { IClient } from "./core/ext-types.js";
 import clientsIndex from "./clients/client-index.js";
 import { buildPipeline, IPipelineSchema } from "./core/rockefeller.js";
+import crypto from 'crypto';
 
 /*
  * App environment variables
@@ -31,12 +32,21 @@ catch (e) {
     console.log("Unable to parse clients JSON environment variable");
 }
 
+const addUuid = (config: any) => {
+    if (config?.definitions?.cloudwatch_group_name) {
+        config.definitions.cloudwatch_group_name += crypto.randomUUID();
+    }
+}
+
 const processClient = async (client: IClient) => {
     const commandGenerator = client.makeCommandGenerator();
     for await (const command of commandGenerator) {
         if (command == null) {
             continue;
         }
+
+        // TODO - find better way to add this
+        addUuid(command.pipelineConfiguration);
 
         const executionResult = await processPipeline(command.pipelineConfiguration);
         command.handleExecutionResult(executionResult);
