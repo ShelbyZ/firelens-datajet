@@ -37,6 +37,7 @@ RUN yum install -y  \
       bison \
       nodejs \
       gdb \
+      yum-utils \
     && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 \
       --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 \
       --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 \
