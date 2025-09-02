@@ -77,7 +77,8 @@
         "netmask": "^2.0.1"
       }
     },
-    "form-data": "^2.5.4"
+    "form-data": "^2.5.4",
+    "brace-expansion": "^2.0.2"
   },
   "devDependencies": {
     "eslint": "8.41.0",
